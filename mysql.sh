@@ -44,8 +44,13 @@ VALIDATE $? "enabling mysqld"
 systemctl start mysqld &>>$LOG_FILE
 VALIDATE $? "starting mysqld"
 
-mysql_secure_installation --set-root-pass ExpenseApp@1 &>>$LOG_FILE
-VALIDATE $? "mysql installation"
+mysql -h mysql.sivadevops.fun -u root -pExpenseApp@1 &>>$LOG_FILE
+if [ $? -ne 0 ]
+then 
+    echo "MySQL root password is not setup, setting now" &>>$LOG_FILE
+    mysql_secure_installation --set-root-pass ExpenseApp@1
+    VALIDATE $? "Setting up Root password"
+fi
 
 
 
