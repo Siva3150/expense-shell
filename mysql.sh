@@ -50,20 +50,13 @@ then
     echo "MySQL root password is not setup, setting now" &>>$LOG_FILE
     mysql_secure_installation --set-root-pass ExpenseApp@1
     VALIDATE $? "Setting up Root password"
+else
+    echo -e "MySQL root password is already setup...$Y SKIPPING $N" | tee -a $LOG_FILE
 fi
 
+# Assignment
+# check MySQL Server is installed or not, enabled or not, started or not
+# implement the above things
 
 
-for package in $@ # $@ refers to all arguments passed to it
-do
-    dnf list installed $package &>>$LOG_FILE
-    if [ $? -ne 0 ]
-    then
-        echo "$package is not installed, going to install it.." | tee -a $LOG_FILE
-        dnf install $package -y &>>$LOG_FILE
-        VALIDATE $? "Installing $package"
-    else
-        echo -e "$package is already $Y installed..nothing to do $N" | tee -a $LOG_FILE
-    fi
-done
 
